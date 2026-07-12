@@ -1,3 +1,67 @@
+local fts = {
+  "bash",
+  "c",
+  "cmake",
+  "cpp",
+  "css",
+  "dockerfile",
+  "fish",
+  "ghostty",
+  "gitignore",
+  "go",
+  "graphql",
+  "haskell",
+  "html",
+  "javascript",
+  "javascriptreact",
+  "jsdoc",
+  "json",
+  "kdl",
+  "lua",
+  "markdown",
+  "prisma",
+  "query",
+  "rust",
+  "sh",
+  "supercollider",
+  "svelte",
+  "tidal",
+  "tmux",
+  "tsx",
+  "typescript",
+  "typescriptreact",
+  "vim",
+  "yaml",
+  "zig",
+}
+
+vim.api.nvim_create_autocmd("FileType", {
+  pattern = fts,
+  callback = function()
+    pcall(vim.treesitter.start)
+  end,
+})
+
+vim.filetype.add({
+  extension = {
+    mdc = "markdown",
+    kbd = "lisp",
+    conf = "conf",
+    tiltfile = "tiltfile",
+    Tiltfile = "tiltfile",
+    tidal = "tidal",
+  },
+  filename = {
+    ["tsconfig.json"] = "jsonc",
+    [".yamlfmt"] = "yaml",
+  },
+  pattern = {
+    [".*/ghostty/.*"] = "ghostty",
+    [".*/mako/config"] = "ghostty",
+    [".env.*"] = "sh",
+  },
+})
+
 -- Custom incremental selection
 _G.selected_nodes = {}
 
