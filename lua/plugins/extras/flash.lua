@@ -42,6 +42,7 @@ return {
   },
   ---@type Flash.Config
   opts = {
+    labels = "shtaregyniwfdoblcuxmkvqpjz",
     search = {
       multi_window = false,
       exclude = {
@@ -61,6 +62,7 @@ return {
     },
     modes = {
       char = {
+        enabled = false,
         multi_line = true,
         jump_labels = false,
       },
