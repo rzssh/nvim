@@ -27,7 +27,6 @@ local fts = {
   "supercollider",
   "svelte",
   "tidal",
-  "tmux",
   "tsx",
   "typescript",
   "typescriptreact",
