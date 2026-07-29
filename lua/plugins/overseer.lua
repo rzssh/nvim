@@ -1,10 +1,11 @@
 return {
   "stevearc/overseer.nvim",
   event = "VeryLazy",
-  cmd = { "OverseerRun", "OverseerToggle", "OverseerTaskList", "OverseerInfo" },
+  cmd = { "OverseerRun", "OverseerShell", "OverseerToggle", "OverseerTaskList", "OverseerInfo" },
   keys = {
     { "<leader>or", "<cmd>OverseerRun<cr>", desc = "Run task" },
     { "<leader>ot", "<cmd>OverseerToggle<cr>", desc = "Task list" },
+    { "<leader>os", "<cmd>OverseerShell<cr>", desc = "Shell task" },
     { "<leader>ol", "<cmd>OverseerTaskAction<cr>", desc = "Task action" },
     { "<leader>b", desc = "Build" },
   },

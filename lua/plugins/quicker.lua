@@ -24,19 +24,6 @@ return {
       desc = "Toggle buffer diagnostics",
     },
     {
-      "<leader>xD",
-      function()
-        local quicker = require("quicker")
-
-        if quicker.is_open() then
-          quicker.close()
-        else
-          vim.diagnostic.setqflist()
-        end
-      end,
-      desc = "Toggle project diagnostics",
-    },
-    {
       ">",
       function()
         local quicker = require("quicker")

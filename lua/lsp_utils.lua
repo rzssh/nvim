@@ -30,9 +30,6 @@ M.on_attach = function(_, bufnr)
     vim.diagnostic.open_float()
     vim.diagnostic.open_float()
   end, opts("Go inside diagnostic window"))
-  map({ "n", "v" }, "<leader>cq", function()
-    vim.diagnostic.setqflist()
-  end, opts("Populate qflist with diagnostics"))
 end
 
 M.lsp_action = setmetatable({}, {
