@@ -1,3 +1,5 @@
+local map = vim.keymap.set
+
 vim.g.mapleader = " "
 vim.g.maplocalleader = " "
 
@@ -22,12 +24,7 @@ require("utils").mirror_keys({
   ["L"] = "<S-Right>",
 })
 
-local map = vim.keymap.set
-
-map("i", "jk", "<Esc>", { desc = "Exit insert mode with jk" })
 map("n", "<2-LeftMouse>", "<LeftMouse>viw", { noremap = true, silent = true })
-
-map({ "n", "v" }, "<leader>cj", ":%!jq '.'<cr>", { desc = "Format JSON" })
 
 map({ "n", "v" }, "<C-u>", "<C-u>zz", { noremap = true, silent = true })
 map({ "n", "v" }, "<C-d>", "<C-d>zz", { noremap = true, silent = true })
@@ -45,7 +42,8 @@ map("v", "g<M-=>", "g<C-a>gv", { noremap = true, silent = true, desc = "Sequenti
 map("v", "g<M-->", "g<C-x>gv", { noremap = true, silent = true, desc = "Sequential decrement" })
 map({ "n", "v" }, "<C-a>", "<Nop>", { noremap = true, silent = true })
 
-map("n", "<leader>pp", '"_cgn<C-r>"<Esc>', { desc = "Change next match with clipboard" }) -- (dot-repeatable)
+map("n", "gp", "`[v`]", { desc = "Select previous paste" })
+map("n", "cp", '"_cgn<C-r>"<Esc>', { desc = "Change next match with clipboard" }) -- (dot-repeatable)
 
 map("n", "<leader>yy", ':let @+ = expand("%:p")<CR>', { desc = "Copy buffer's path" })
 map("n", "<leader>yr", ':let @+ = expand("%:.")<CR>', { desc = "Copy relative path" })
@@ -64,8 +62,6 @@ map("n", "<leader>wH", "<C-w>H", { desc = "Move split to left" })
 map("n", "<leader>wJ", "<C-w>J", { desc = "Move split to bottom" })
 map("n", "<leader>wK", "<C-w>K", { desc = "Move split to top" })
 map("n", "<leader>wL", "<C-w>L", { desc = "Move split to right" })
-
-map("n", "gp", "`[v`]", { desc = "Select previous paste" })
 
 -- move in wrapped line, useful when vim.opt.wrap is set to true.
 map({ "n", "v" }, "k", function()

@@ -110,7 +110,9 @@ return {
               default = vim.fn.fnamemodify(fname, ":h") .. "/",
               completion = "file",
             }, function(newf)
-              return newf and move(newf)
+              if newf then
+                move(newf)
+              end
             end)
           elseif f then
             move(f)

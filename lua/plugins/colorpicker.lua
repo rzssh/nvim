@@ -4,4 +4,13 @@ return {
   version = "*",
   ---@type oklch.Opts
   opts = {},
+  keys = {
+    {
+      "<leader>pc",
+      function()
+        require("oklch-color-picker").pick_under_cursor()
+      end,
+      desc = "Color pick under cursor",
+    },
+  },
 }

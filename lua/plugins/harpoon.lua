@@ -1,8 +1,9 @@
 local api, fs, uv = vim.api, vim.fs, vim.uv
 local state = { pinned = false, version = 0, win = nil }
+local namespace = api.nvim_create_namespace("HarpoonGlimmer")
 
 local function project_root()
-  local cwd = uv.cwd()
+  local cwd = assert(uv.cwd())
   return fs.root(cwd, ".git") or cwd
 end
 
@@ -82,7 +83,10 @@ local function render()
 
   for line = 1, #lines do
     local highlight = line == selected_line and "HarpoonSelectedOptionHL" or "HarpoonOptionHL"
-    api.nvim_buf_add_highlight(buf, -1, highlight, line - 1, 0, -1)
+    api.nvim_buf_set_extmark(buf, namespace, line - 1, 0, {
+      end_col = #lines[line],
+      hl_group = highlight,
+    })
   end
 end
 
@@ -103,7 +107,7 @@ local function toggle()
   if state.pinned then
     render()
   else
-    show()
+    close()
   end
 end
 
