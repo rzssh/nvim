@@ -222,7 +222,6 @@ M.plugin = {
     { "<leader><leader>", function() Snacks.picker.smart() end, desc = "Smart Find Files" },
     { "<leader>.", function() Snacks.picker.files({ cwd = vim.fn.expand("%:p:h") }) end, desc = "Find in directory" },
     { "<leader>e", function() Snacks.explorer() end, desc = "File Explorer (Snacks)" },
-    { "<C-b>", function() Snacks.picker.buffers() end, desc = "Find Buffer" },
     { "<leader>fb", function() Snacks.picker.buffers() end, desc = "Find Buffer" },
     { "<leader>ff", function() Snacks.picker.recent() end, desc = "Find Recent Files" },
     { "<leader>fc", function() Snacks.picker.files({ cwd = os.getenv("HOME") .. "/projects/dotfiles" }) end, desc = "Find Under Dotfiles" },
