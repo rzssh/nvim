@@ -45,20 +45,9 @@ local function transparent_float()
   vim.api.nvim_set_hl(0, "FloatTitle", { bg = "NONE" })
 end
 
-local function transparent_neotree()
-  vim.api.nvim_set_hl(0, "NeoTreeNormal", { bg = "NONE" })
-  vim.api.nvim_set_hl(0, "NeoTreeNormalNC", { bg = "NONE" })
-  vim.api.nvim_set_hl(0, "NeoTreeFloatBorder", { bg = "NONE" })
-end
-
 local function transparent_statusline()
   vim.api.nvim_set_hl(0, "StatusLine", { bg = "NONE" })
   vim.api.nvim_set_hl(0, "StatusLineNC", { bg = "NONE" })
-end
-
-local function default_harpoon()
-  vim.api.nvim_set_hl(0, "HarpoonOptionHL", { fg = "#89DDFF" })
-  vim.api.nvim_set_hl(0, "HarpoonSelectedOptionHL", { fg = "#5DE4C7" })
 end
 
 local function minicursorword()
@@ -70,20 +59,6 @@ local function minicursorword()
   local word_bg = blend_int(func.fg, cl.bg, 0.25)
   vim.api.nvim_set_hl(0, "MiniCursorword", { bg = word_bg })
   vim.api.nvim_set_hl(0, "MiniCursorwordCurrent", { bg = word_bg })
-end
-
-local function ts_context()
-  vim.api.nvim_set_hl(
-    0,
-    "TreesitterContext",
-    { bg = vim.api.nvim_get_hl(0, { name = "CursorLine" }).bg }
-  )
-  vim.api.nvim_set_hl(0, "TreesitterContextBottom", { underline = false })
-end
-
-local function flash_search()
-  vim.api.nvim_set_hl(0, "FlashCurrent", { link = "CurSearch" })
-  vim.api.nvim_set_hl(0, "FlashMatch", { link = "Search" })
 end
 
 local function mini_diff_overlay()
@@ -331,7 +306,6 @@ M.themes = {
     after = function()
       transparent_winbar()
       transparent_float()
-      transparent_neotree()
     end,
   },
   {
@@ -343,7 +317,6 @@ M.themes = {
     after = function()
       transparent_winbar()
       transparent_float()
-      transparent_neotree()
     end,
   },
 }
@@ -380,11 +353,8 @@ function M.apply(name)
     end
 
     minicursorword()
-    ts_context()
     mini_diff_overlay()
-    flash_search()
     ts_lsp_bold_nodes()
-    default_harpoon()
     transparent_statusline()
     diagnostics()
 

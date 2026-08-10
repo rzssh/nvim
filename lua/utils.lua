@@ -1,18 +1,14 @@
 local M = {}
 
--- unpatched originals, stashed once, for callers that need to set a keymap
--- WITHOUT it being auto-mirrored (see mirror_keys below).
-M.raw = {
-  set = vim.keymap.set,
-  set_keymap = vim.api.nvim_set_keymap,
-  buf_set_keymap = vim.api.nvim_buf_set_keymap,
-}
-
 M.mirror_keys = function(aliases)
   local function replace_lhs(lhs)
-    if type(lhs) ~= "string" or vim.startswith(lhs, "<Plug>") then return end
+    if type(lhs) ~= "string" or vim.startswith(lhs, "<Plug>") then
+      return
+    end
     for from, to in pairs(aliases) do
-      if lhs == from then return to end
+      if lhs == from then
+        return to
+      end
       if vim.endswith(lhs, from) then
         local prefix = lhs:sub(1, #lhs - #from)
         if not vim.endswith(prefix, "-") then

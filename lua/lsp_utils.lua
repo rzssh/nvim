@@ -32,20 +32,6 @@ M.on_attach = function(_, bufnr)
   end, opts("Go inside diagnostic window"))
 end
 
-M.lsp_action = setmetatable({}, {
-  __index = function(_, action)
-    return function()
-      vim.lsp.buf.code_action({
-        apply = true,
-        context = {
-          only = { action },
-          diagnostics = {},
-        },
-      })
-    end
-  end,
-})
-
 function M.apply_action_sync(client, bufnr, action_name, timeout_ms)
   timeout_ms = timeout_ms or 3000
   local params = {
@@ -75,21 +61,6 @@ function M.apply_action_sync(client, bufnr, action_name, timeout_ms)
       end
     end
   end
-end
-
-function M.execute_command(opts)
-  local params = {
-    command = opts.command,
-    arguments = opts.arguments,
-  }
-
-  local trouble_ok, _ = pcall(require, "trouble")
-
-  if opts.open and trouble_ok then
-    return require("trouble").open({ mode = "lsp_command", params = params })
-  end
-
-  return vim.lsp.buf_request(0, "workspace/executeCommand", params, opts.handler)
 end
 
 M.execute_system_cmd_and_sync_buf = function(cmd)

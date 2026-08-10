@@ -1,9 +1,5 @@
 require("core.init")
 
-local uv = vim.uv or vim.loop
-local uname = uv.os_uname().sysname
-vim.g.is_linux = uname == "Linux"
-
 local lazypath = vim.fn.stdpath("data") .. "/lazy/lazy.nvim"
 if not vim.uv.fs_stat(lazypath) then
   vim.fn.system({
