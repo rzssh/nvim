@@ -1,5 +1,3 @@
-local M = {}
-
 local function bad_dim(value)
   return type(value) ~= "number" or value <= 0 or value ~= value
 end
@@ -67,7 +65,7 @@ local function patch_snacks_image()
   end
 end
 
-M.plugin = {
+return {
   "folke/snacks.nvim",
   priority = 1000,
   lazy = false,
@@ -125,7 +123,6 @@ M.plugin = {
         keys = {
           { icon = " ", key = "f", desc = "Find Files", action = ":lua Snacks.dashboard.pick('smart', { hidden = true })" },
           { icon = " ", key = "g", desc = "Find Text", action = ":lua Snacks.dashboard.pick('live_grep', { hidden = true })" },
-          { icon = " ", key = "d", desc = "View Diff", action = ":CodeDiff" },
           { icon = "󰒲 ", key = "L", desc = "Lazy", action = ":Lazy", enabled = package.loaded.lazy ~= nil },
           { icon = " ", key = "q", desc = "Quit", action = ":qa" },
         },
@@ -236,7 +233,7 @@ M.plugin = {
     { "<leader>sB", function() Snacks.picker.grep_buffers() end, desc = "Grep Open Buffers" },
 
     -- NOTE: Git
-    { "<leader>gm", function() M.grep_git_files() end, desc = "Grep Git Files" },
+    { "<leader>gm", function() Snacks.picker.git_grep({ untracked = true }) end, desc = "Grep Git Files" },
     { "<leader>gf", function() Snacks.picker.git_status() end, desc = "Find Git Files" },
     { "<leader>gb", function() Snacks.picker.git_branches() end, desc = "Git Branches" },
     { "<leader>gl", function() Snacks.picker.git_log_file() end, desc = "Git Log File" },
@@ -400,91 +397,13 @@ M.plugin = {
     end
 
     vim.schedule(function()
-      vim.g.statuscolumn_show_signs = true
-      Snacks.toggle({
-        name = "Statuscolumn Signs",
-        get = function()
-          return vim.g.statuscolumn_show_signs
-        end,
-        set = function(state)
-          vim.g.statuscolumn_show_signs = state
-        end,
-      }):map("<leader>us")
+      Snacks.toggle
+        .option("signcolumn", {
+          name = "Statuscolumn Signs",
+          on = "yes:1",
+          off = "no",
+        })
+        :map("<leader>us")
     end)
   end,
 }
-
-function M.grep_git_files()
-  local files = {}
-  local git_root = nil
-
-  local git_root_job = require("plenary.job"):new({
-    command = "git",
-    args = { "rev-parse", "--show-toplevel" },
-    on_exit = function(job)
-      local result = job:result()
-      if result and #result > 0 then
-        git_root = result[1]
-      end
-    end,
-  })
-
-  git_root_job:sync()
-  if not git_root or #git_root == 0 then
-    vim.notify("Could not find git root", vim.log.levels.ERROR)
-    return
-  end
-
-  -- Staged files (added/modified and staged for commit)
-  require("plenary.job")
-    :new({
-      command = "git",
-      args = { "diff", "--cached", "--name-only" },
-      cwd = git_root,
-      on_stdout = function(_, line)
-        if line and #line > 0 then
-          files[line] = true
-        end
-      end,
-    })
-    :sync()
-
-  -- Modified but unstaged files
-  require("plenary.job")
-    :new({
-      command = "git",
-      args = { "diff", "--name-only" },
-      cwd = git_root,
-      on_stdout = function(_, line)
-        if line and #line > 0 then
-          files[line] = true
-        end
-      end,
-    })
-    :sync()
-
-  local file_list = {}
-  for file, _ in pairs(files) do
-    table.insert(file_list, file)
-  end
-
-  if #file_list == 0 then
-    vim.notify("No git files found", vim.log.levels.INFO)
-    return
-  end
-
-  local args = {}
-  for _, file in ipairs(file_list) do
-    table.insert(args, "--glob")
-    table.insert(args, file)
-  end
-
-  Snacks.picker.grep({
-    title = "Grep in Git Files",
-    need_search = true,
-    args = args,
-    cwd = git_root,
-  })
-end
-
-return M.plugin
