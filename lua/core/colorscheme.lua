@@ -152,10 +152,6 @@ local function apply_matugen(variant)
     return false
   end
 
-  vim.cmd("hi clear")
-  vim.g.colors_name = "matugen"
-  vim.o.background = "dark"
-
   local bg = data.special.background
   local fg = data.special.foreground
   local c = data.colors
@@ -166,201 +162,161 @@ local function apply_matugen(variant)
   local ter = m.tertiary or c.color5
   local selection_bg = m.primary_container or c.color0
   local selection_fg = m.on_primary_container or fg
-
-  local syn
-  if variant == "rich" then
-    syn = { kw = pri, fn = accent, str = c.color2, typ = sec, const = ter, spec = c.color6, op = c.color7, num = c.color5 }
-  else
-    syn = { kw = c.color1, fn = accent, str = c.color2, typ = c.color3, const = c.color5, spec = c.color6, op = c.color6, num = c.color5 }
-  end
-
+  local syn = variant == "rich"
+      and {
+        kw = pri,
+        fn = accent,
+        str = c.color2,
+        typ = sec,
+        const = ter,
+        spec = c.color6,
+        op = c.color7,
+        num = c.color5,
+      }
+    or {
+      kw = c.color1,
+      fn = accent,
+      str = c.color2,
+      typ = c.color3,
+      const = c.color5,
+      spec = c.color6,
+      op = c.color6,
+      num = c.color5,
+    }
   local subtle = lighten(bg, 0.1)
 
-  local hi = vim.api.nvim_set_hl
-  hi(0, "Normal", { fg = fg, bg = "NONE" })
-  hi(0, "NormalFloat", { fg = fg, bg = "NONE" })
-  hi(0, "FloatBorder", { fg = c.color8, bg = "NONE" })
-  hi(0, "CursorLine", { bg = subtle })
-  hi(0, "Visual", { fg = selection_fg, bg = selection_bg })
-  hi(0, "LineNr", { fg = c.color8 })
-  hi(0, "CursorLineNr", { fg = accent, bold = true })
-  hi(0, "Search", { fg = bg, bg = c.color3 })
-  hi(0, "IncSearch", { fg = bg, bg = c.color5 })
-  hi(0, "Comment", { fg = c.color8, italic = true })
-  hi(0, "String", { fg = syn.str })
-  hi(0, "Function", { fg = syn.fn, bold = true })
-  hi(0, "Keyword", { fg = syn.kw })
-  hi(0, "Type", { fg = syn.typ })
-  hi(0, "Constant", { fg = syn.const })
-  hi(0, "Identifier", { fg = fg })
-  hi(0, "Special", { fg = syn.spec })
-  hi(0, "Statement", { fg = syn.kw })
-  hi(0, "PreProc", { fg = syn.typ })
-  hi(0, "Operator", { fg = syn.op })
-  hi(0, "Pmenu", { fg = fg, bg = c.color0 })
-  hi(0, "PmenuSel", { fg = selection_fg, bg = selection_bg, bold = true })
-  hi(0, "PmenuSbar", { bg = c.color0 })
-  hi(0, "PmenuThumb", { bg = c.color8 })
+  require("mini.base16").setup({
+    palette = {
+      base00 = bg,
+      base01 = subtle,
+      base02 = selection_bg,
+      base03 = c.color8,
+      base04 = c.color7,
+      base05 = fg,
+      base06 = c.color15 or fg,
+      base07 = selection_fg,
+      base08 = c.color1,
+      base09 = syn.const,
+      base0A = syn.typ,
+      base0B = syn.str,
+      base0C = syn.spec,
+      base0D = syn.fn,
+      base0E = syn.kw,
+      base0F = ter,
+    },
+    plugins = {
+      default = false,
+      ["nvim-mini/mini.nvim"] = true,
+      ["anuvyklack/hydra.nvim"] = true,
+      ["folke/lazy.nvim"] = true,
+      ["folke/which-key.nvim"] = true,
+      ["OXY2DEV/markview.nvim"] = true,
+      ["saghen/blink.cmp"] = true,
+    },
+  })
+  vim.g.colors_name = "matugen"
+  vim.o.background = "dark"
 
-  hi(0, "Number", { fg = syn.num })
-  hi(0, "Boolean", { fg = syn.num })
-  hi(0, "Title", { fg = accent, bold = true })
-  hi(0, "Directory", { fg = accent })
-  hi(0, "MatchParen", { fg = c.color3, bold = true })
-  hi(0, "WinSeparator", { fg = c.color8 })
-  hi(0, "ErrorMsg", { fg = c.color1 })
-  hi(0, "WarningMsg", { fg = c.color3 })
+  local highlights = {
+    Normal = { fg = fg, bg = "NONE" },
+    NormalNC = { fg = fg, bg = "NONE" },
+    Visual = { fg = selection_fg, bg = selection_bg },
+    LineNr = { fg = c.color8 },
+    CursorLineNr = { fg = accent, bold = true },
+    Search = { fg = bg, bg = c.color3 },
+    IncSearch = { fg = bg, bg = c.color5 },
+    Comment = { fg = c.color8, italic = true },
+    Function = { fg = syn.fn, bold = true },
+    Statement = { fg = syn.kw },
+    Number = { fg = syn.num },
+    Boolean = { fg = syn.num },
+    Identifier = { fg = fg },
+    Operator = { fg = syn.op },
+    Pmenu = { fg = fg, bg = c.color0 },
+    PmenuSel = { fg = selection_fg, bg = selection_bg, bold = true },
+    PmenuSbar = { bg = c.color0 },
+    PmenuThumb = { bg = c.color8 },
+    Title = { fg = accent, bold = true },
+    MatchParen = { fg = c.color3, bold = true },
+    WinSeparator = { fg = c.color8 },
+    WarningMsg = { fg = c.color3 },
+    SignColumn = { bg = "NONE" },
+    FoldColumn = { fg = c.color8, bg = "NONE" },
+    Whitespace = { fg = subtle },
+    EndOfBuffer = { fg = bg },
+    QuickFixLine = { fg = selection_fg, bg = selection_bg, bold = true },
+    Error = { fg = c.color1 },
+    Substitute = { fg = bg, bg = c.color5 },
+    SpellBad = { sp = c.color1, undercurl = true },
+    SpellCap = { sp = c.color3, undercurl = true },
+    SpellRare = { sp = c.color6, undercurl = true },
+    SpellLocal = { sp = c.color2, undercurl = true },
+    DiagnosticUnderlineError = { sp = c.color1, undercurl = true },
+    DiagnosticUnderlineWarn = { sp = c.color3, undercurl = true },
+    DiagnosticUnderlineInfo = { sp = c.color4, undercurl = true },
+    DiagnosticUnderlineHint = { sp = c.color6, undercurl = true },
+    DiagnosticVirtualTextError = { fg = c.color1, bg = "NONE" },
+    DiagnosticVirtualTextWarn = { fg = c.color3, bg = "NONE" },
+    DiagnosticVirtualTextInfo = { fg = c.color4, bg = "NONE" },
+    DiagnosticVirtualTextHint = { fg = c.color6, bg = "NONE" },
+    LspInlayHint = { fg = c.color8, bg = "NONE", italic = true },
+    LspReferenceText = { bg = subtle },
+    LspReferenceRead = { bg = subtle },
+    LspReferenceWrite = { bg = subtle, bold = true },
+    FlashLabel = { fg = bg, bg = c.color5, bold = true },
+    FlashBackdrop = { fg = c.color8 },
+    DropBarMenuCurrentContext = { bg = subtle },
+    DropBarMenuHoverEntry = { fg = selection_fg, bg = selection_bg },
+  }
+  for group, opts in pairs(highlights) do
+    vim.api.nvim_set_hl(0, group, opts)
+  end
 
-  hi(0, "StatusLine", { fg = fg, bg = c.color0 })
-  hi(0, "StatusLineNC", { fg = c.color8, bg = c.color0 })
-  hi(0, "WinBar", { fg = fg, bg = "NONE" })
-  hi(0, "WinBarNC", { fg = c.color8, bg = "NONE" })
-  hi(0, "TabLine", { fg = c.color8, bg = c.color0 })
-  hi(0, "TabLineSel", { fg = bg, bg = accent })
-  hi(0, "TabLineFill", { bg = c.color0 })
-
-  hi(0, "DiagnosticError", { fg = c.color1 })
-  hi(0, "DiagnosticWarn", { fg = c.color3 })
-  hi(0, "DiagnosticInfo", { fg = c.color4 })
-  hi(0, "DiagnosticHint", { fg = c.color6 })
-  hi(0, "DiagnosticOk", { fg = c.color2 })
-
-  hi(0, "DiffAdd", { fg = c.color2, bg = "NONE" })
-  hi(0, "DiffChange", { fg = c.color3, bg = "NONE" })
-  hi(0, "DiffDelete", { fg = c.color1, bg = "NONE" })
-  hi(0, "GitSignsAdd", { fg = c.color2 })
-  hi(0, "GitSignsChange", { fg = c.color3 })
-  hi(0, "GitSignsDelete", { fg = c.color1 })
-
-  -- Modern nvim no longer links these to base groups by default, so set them explicitly.
-  local ts = {
+  local links = {
+    LineNrAbove = "LineNr",
+    LineNrBelow = "LineNr",
+    DiagnosticFloatingError = "DiagnosticError",
+    DiagnosticFloatingWarn = "DiagnosticWarn",
+    DiagnosticFloatingInfo = "DiagnosticInfo",
+    DiagnosticFloatingHint = "DiagnosticHint",
+    DiagnosticFloatingOk = "DiagnosticOk",
+    DiagnosticSignError = "DiagnosticError",
+    DiagnosticSignWarn = "DiagnosticWarn",
+    DiagnosticSignInfo = "DiagnosticInfo",
+    DiagnosticSignHint = "DiagnosticHint",
+    DiagnosticSignOk = "DiagnosticOk",
     ["@variable"] = "Identifier",
     ["@variable.builtin"] = "Statement",
     ["@variable.parameter"] = "Identifier",
     ["@variable.member"] = "Special",
     ["@property"] = "Special",
     ["@field"] = "Special",
-    ["@function"] = "Function",
     ["@function.call"] = "Function",
     ["@function.builtin"] = "Function",
     ["@function.method"] = "Function",
     ["@function.method.call"] = "Function",
     ["@constructor"] = "Type",
     ["@parameter"] = "Identifier",
-    ["@keyword"] = "Keyword",
     ["@keyword.function"] = "Keyword",
     ["@keyword.return"] = "Keyword",
     ["@conditional"] = "Keyword",
     ["@repeat"] = "Keyword",
-    ["@string"] = "String",
     ["@string.escape"] = "Special",
-    ["@number"] = "Number",
-    ["@boolean"] = "Boolean",
-    ["@constant"] = "Constant",
     ["@constant.builtin"] = "Constant",
-    ["@type"] = "Type",
     ["@type.builtin"] = "Type",
-    ["@operator"] = "Operator",
     ["@punctuation"] = "Identifier",
     ["@punctuation.bracket"] = "Identifier",
     ["@punctuation.delimiter"] = "Identifier",
     ["@punctuation.special"] = "Special",
-    ["@comment"] = "Comment",
     ["@tag"] = "Keyword",
     ["@tag.attribute"] = "Function",
     ["@tag.delimiter"] = "Identifier",
     ["@namespace"] = "Type",
     ["@module"] = "Type",
-    ["@lsp.type.variable"] = "@variable",
-    ["@lsp.type.parameter"] = "@parameter",
-    ["@lsp.type.property"] = "@property",
-    ["@lsp.type.function"] = "@function",
-    ["@lsp.type.method"] = "@function.method",
-    ["@lsp.type.class"] = "@type",
-    ["@lsp.type.namespace"] = "@namespace",
   }
-  for from, to in pairs(ts) do
-    hi(0, from, { link = to })
+  for from, to in pairs(links) do
+    vim.api.nvim_set_hl(0, from, { link = to })
   end
-
-  hi(0, "SignColumn", { bg = "NONE" })
-  hi(0, "FoldColumn", { fg = c.color8, bg = "NONE" })
-  hi(0, "Folded", { fg = c.color8, bg = subtle })
-  hi(0, "NonText", { fg = c.color8 })
-  hi(0, "Whitespace", { fg = subtle })
-  hi(0, "EndOfBuffer", { fg = bg })
-  hi(0, "ColorColumn", { bg = subtle })
-  hi(0, "CursorColumn", { bg = subtle })
-  hi(0, "QuickFixLine", { fg = selection_fg, bg = selection_bg, bold = true })
-  hi(0, "Underlined", { underline = true })
-  hi(0, "Error", { fg = c.color1 })
-  hi(0, "Todo", { fg = bg, bg = c.color3, bold = true })
-  hi(0, "FloatTitle", { fg = accent, bold = true })
-  hi(0, "Substitute", { fg = bg, bg = c.color5 })
-  hi(0, "SpellBad", { sp = c.color1, undercurl = true })
-  hi(0, "SpellCap", { sp = c.color3, undercurl = true })
-  hi(0, "SpellRare", { sp = c.color6, undercurl = true })
-  hi(0, "SpellLocal", { sp = c.color2, undercurl = true })
-
-  hi(0, "DiagnosticUnderlineError", { sp = c.color1, undercurl = true })
-  hi(0, "DiagnosticUnderlineWarn", { sp = c.color3, undercurl = true })
-  hi(0, "DiagnosticUnderlineInfo", { sp = c.color4, undercurl = true })
-  hi(0, "DiagnosticUnderlineHint", { sp = c.color6, undercurl = true })
-  hi(0, "DiagnosticVirtualTextError", { fg = c.color1, bg = "NONE" })
-  hi(0, "DiagnosticVirtualTextWarn", { fg = c.color3, bg = "NONE" })
-  hi(0, "DiagnosticVirtualTextInfo", { fg = c.color4, bg = "NONE" })
-  hi(0, "DiagnosticVirtualTextHint", { fg = c.color6, bg = "NONE" })
-  hi(0, "LspInlayHint", { fg = c.color8, bg = "NONE", italic = true })
-  hi(0, "LspReferenceText", { bg = subtle })
-  hi(0, "LspReferenceRead", { bg = subtle })
-  hi(0, "LspReferenceWrite", { bg = subtle, bold = true })
-
-  hi(0, "BlinkCmpMenu", { fg = fg, bg = c.color0 })
-  hi(0, "BlinkCmpMenuBorder", { fg = c.color8, bg = "NONE" })
-  hi(0, "BlinkCmpMenuSelection", { fg = selection_fg, bg = selection_bg, bold = true })
-  hi(0, "BlinkCmpLabelMatch", { fg = accent, bold = true })
-  hi(0, "BlinkCmpLabelDetail", { fg = c.color8 })
-  hi(0, "BlinkCmpLabelDescription", { fg = c.color8 })
-  hi(0, "BlinkCmpKind", { fg = c.color5 })
-  hi(0, "BlinkCmpSource", { fg = c.color8 })
-  hi(0, "BlinkCmpGhostText", { fg = c.color8, italic = true })
-  hi(0, "BlinkCmpDoc", { fg = fg, bg = "NONE" })
-  hi(0, "BlinkCmpDocBorder", { fg = c.color8, bg = "NONE" })
-
-  hi(0, "SnacksPicker", { fg = fg, bg = "NONE" })
-  hi(0, "SnacksPickerBorder", { fg = c.color8, bg = "NONE" })
-  hi(0, "SnacksPickerTitle", { fg = accent, bold = true })
-  hi(0, "SnacksPickerMatch", { fg = accent, bold = true })
-  hi(0, "SnacksPickerCursorLine", { bg = subtle })
-  hi(0, "SnacksPickerListCursorLine", { bg = subtle })
-  hi(0, "SnacksPickerPrompt", { fg = c.color5, bold = true })
-  hi(0, "SnacksPickerDir", { fg = c.color8 })
-  hi(0, "SnacksIndent", { fg = subtle })
-  hi(0, "SnacksIndentScope", { fg = c.color8 })
-  hi(0, "SnacksNotifierInfo", { fg = c.color4 })
-  hi(0, "SnacksNotifierWarn", { fg = c.color3 })
-  hi(0, "SnacksNotifierError", { fg = c.color1 })
-  hi(0, "SnacksInputBorder", { fg = accent })
-  hi(0, "SnacksInputTitle", { fg = accent, bold = true })
-
-  hi(0, "FlashLabel", { fg = bg, bg = c.color5, bold = true })
-  hi(0, "FlashMatch", { fg = bg, bg = c.color4 })
-  hi(0, "FlashCurrent", { fg = bg, bg = c.color3 })
-  hi(0, "FlashBackdrop", { fg = c.color8 })
-
-  hi(0, "WhichKey", { fg = accent, bold = true })
-  hi(0, "WhichKeyGroup", { fg = c.color5 })
-  hi(0, "WhichKeyDesc", { fg = fg })
-  hi(0, "WhichKeySeparator", { fg = c.color8 })
-  hi(0, "WhichKeyNormal", { bg = "NONE" })
-  hi(0, "WhichKeyBorder", { fg = c.color8, bg = "NONE" })
-
-  hi(0, "AerialLine", { bg = subtle })
-  hi(0, "DropBarMenuCurrentContext", { bg = subtle })
-  hi(0, "DropBarMenuHoverEntry", { fg = selection_fg, bg = selection_bg })
-
-  hi(0, "OilDir", { fg = accent, bold = true })
-  hi(0, "OilFile", { fg = fg })
 
   return true
 end
@@ -369,7 +325,9 @@ M.themes = {
   {
     name = "System (matugen)",
     colorscheme = "matugen",
-    custom_apply = function() return apply_matugen("ansi") end,
+    custom_apply = function()
+      return apply_matugen("ansi")
+    end,
     after = function()
       transparent_winbar()
       transparent_float()
@@ -379,7 +337,9 @@ M.themes = {
   {
     name = "System (rich)",
     colorscheme = "matugen",
-    custom_apply = function() return apply_matugen("rich") end,
+    custom_apply = function()
+      return apply_matugen("rich")
+    end,
     after = function()
       transparent_winbar()
       transparent_float()
@@ -545,12 +505,16 @@ vim.keymap.set("n", "<leader>uc", M.pick, { desc = "Colorscheme picker" })
 
 local matugen_watcher = vim.uv.new_fs_event()
 if matugen_watcher then
-  matugen_watcher:start(vim.fn.expand("~/.cache/matugen"), {}, vim.schedule_wrap(function(err, fname)
-    if err or fname ~= "colors.json" then
-      return
-    end
-    refresh_matugen()
-  end))
+  matugen_watcher:start(
+    vim.fn.expand("~/.cache/matugen"),
+    {},
+    vim.schedule_wrap(function(err, fname)
+      if err or fname ~= "colors.json" then
+        return
+      end
+      refresh_matugen()
+    end)
+  )
 end
 
 return M
