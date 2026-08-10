@@ -69,8 +69,8 @@ M.file_icon_config = {
   ["vite.config.ts"] = M.icons.vite,
   ["vite.config.js"] = M.icons.vite,
 
-  ["vitest.config.ts"] = M.icons.vite,
-  ["vitest.config.js"] = M.icons.vite,
+  ["vitest.config.ts"] = M.icons.vitest,
+  ["vitest.config.js"] = M.icons.vitest,
 
   ["playwright.config.ts"] = M.icons.playwright,
   ["playwright.config.js"] = M.icons.playwright,
