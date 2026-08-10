@@ -19,7 +19,10 @@ return {
     {
       "<leader>fs",
       function()
-        require("grug-far").toggle_instance({ instanceName = "far", staticTitle = "Find and Replace" })
+        require("grug-far").toggle_instance({
+          instanceName = "far",
+          staticTitle = "Find and Replace",
+        })
       end,
       mode = { "n", "v" },
       desc = "Search and replace",
