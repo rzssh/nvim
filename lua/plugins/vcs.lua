@@ -16,11 +16,4 @@ return {
       end, { desc = "Line attribution" })
     end,
   },
-
-  {
-    "julienvincent/hunk.nvim",
-    cmd = "DiffEditor",
-    dependencies = { "MunifTanjim/nui.nvim" },
-    opts = {},
-  },
 }
