@@ -21,6 +21,8 @@ opt.wrap = true
 opt.ignorecase = true
 opt.smartcase = true
 opt.inccommand = "split"
+opt.grepprg = "rg --hidden --vimgrep --smart-case"
+opt.grepformat = "%f:%l:%c:%m"
 
 opt.cursorline = true
 
