@@ -26,6 +26,7 @@ return {
     "NicolasGB/jj.nvim",
     version = "*",
     cmd = "J",
+    dependencies = { "esmuellert/codediff.nvim" },
     keys = {
       { "<leader>jl", "<cmd>J log<cr>", desc = "JJ: Log" },
       { "<leader>js", "<cmd>J status<cr>", desc = "JJ: Status" },
@@ -45,45 +46,5 @@ return {
   {
     "rafikdraoui/jj-diffconflicts",
     cmd = "JJDiffConflicts",
-  },
-
-  {
-    "pwntester/octo.nvim",
-    cmd = "Octo",
-    dependencies = { "nvim-lua/plenary.nvim" },
-    opts = {
-      picker = "snacks",
-      use_local_fs = false,
-      enable_builtin = true,
-    },
-    keys = {
-      { "<leader>Op", "<cmd>Octo pr list<cr>", desc = "Octo: PR list" },
-      { "<leader>Oi", "<cmd>Octo issue list<cr>", desc = "Octo: issue list" },
-      { "<leader>Or", "<cmd>Octo review start<cr>", desc = "Octo: start review" },
-    },
-    init = function()
-      require("which-key").add({
-        { "<leader>O", group = "GitHub (Octo)" },
-      })
-    end,
-  },
-
-  {
-    "esmuellert/codediff.nvim",
-    dependencies = { "MunifTanjim/nui.nvim" },
-    cmd = "CodeDiff",
-    keys = {
-      { "<leader>gd", "<cmd>CodeDiff<cr>", desc = "Git changes" },
-      { "<leader>gh", "<cmd>CodeDiff history %<cr>", desc = "File history" },
-      { "<leader>gH", "<cmd>CodeDiff history<cr>", desc = "Repository history" },
-      {
-        "<leader>gh",
-        function()
-          vim.cmd("'<,'>CodeDiff history")
-        end,
-        mode = "x",
-        desc = "Selection history",
-      },
-    },
   },
 }
