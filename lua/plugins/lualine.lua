@@ -40,50 +40,42 @@ return {
       return theme
     end
 
-    vim.api.nvim_create_autocmd("ColorScheme", {
-      callback = function()
-        require("lualine").setup({ options = { theme = get_theme() } })
-      end,
-    })
+    local function setup()
+      require("lualine").setup({
+        options = {
+          theme = get_theme(),
+          globalstatus = true,
+        },
+        sections = {
+          lualine_a = { "mode" },
+          lualine_b = { "branch", "diff", "diagnostics" },
+          lualine_c = {},
+          lualine_x = {
+            {
+              function()
+                return "recording @" .. vim.fn.reg_recording()
+              end,
+              cond = function()
+                return vim.fn.reg_recording() ~= ""
+              end,
+              color = { fg = "#ff6b6b" },
+            },
+            "lsp_status",
+            "filetype",
+          },
+          lualine_y = { "progress" },
+          lualine_z = { "location" },
+        },
+      })
+    end
 
+    vim.api.nvim_create_autocmd("ColorScheme", { callback = setup })
     vim.api.nvim_create_autocmd({ "RecordingEnter", "RecordingLeave" }, {
       callback = function()
         require("lualine").refresh()
       end,
     })
 
-    require("lualine").setup({
-      options = {
-        theme = get_theme(),
-      },
-      sections = {
-        lualine_c = {},
-        lualine_x = (function()
-          local components = {
-            { "overseer" },
-            { "encoding" },
-            { "fileformat" },
-            { "filetype" },
-          }
-
-          local ecolog_ok = pcall(require, "ecolog")
-          if ecolog_ok then
-            table.insert(components, 1, require("ecolog.integrations.statusline").lualine())
-          end
-
-          table.insert(components, 1, {
-            function()
-              return "recording @" .. vim.fn.reg_recording()
-            end,
-            cond = function()
-              return vim.fn.reg_recording() ~= ""
-            end,
-            color = { fg = "#ff6b6b" },
-          })
-
-          return components
-        end)(),
-      },
-    })
+    setup()
   end,
 }
