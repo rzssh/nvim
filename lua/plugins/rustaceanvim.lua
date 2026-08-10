@@ -1,9 +1,8 @@
 return {
   "mrcjkb/rustaceanvim",
-  version = "^6",
+  version = "^9",
   lazy = false,
   keys = {
-    { "<leader>rd", "<cmd>RustLsp debuggables<cr>", desc = "Rust debuggables", ft = "rust" },
     { "<leader>rr", "<cmd>RustLsp runnables<cr>", desc = "Rust runnables", ft = "rust" },
     { "<leader>rt", "<cmd>RustLsp testables<cr>", desc = "Rust testables", ft = "rust" },
     { "<leader>re", "<cmd>RustLsp expandMacro<cr>", desc = "Expand macro", ft = "rust" },
@@ -13,14 +12,8 @@ return {
   init = function()
     vim.g.rustaceanvim = {
       dap = {
-        adapter = {
-          type = "server",
-          port = "${port}",
-          executable = {
-            command = "codelldb",
-            args = { "--port", "${port}" },
-          },
-        },
+        autoload_configurations = false,
+        adapter = false,
       },
     }
   end,

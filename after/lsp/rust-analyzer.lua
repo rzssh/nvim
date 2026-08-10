@@ -1,7 +1,7 @@
 local map = vim.keymap.set
 
 local function reload_workspace(bufnr)
-  local clients = vim.lsp.get_clients({ bufnr = bufnr, name = "rust_analyzer" })
+  local clients = vim.lsp.get_clients({ bufnr = bufnr, name = "rust-analyzer" })
   for _, client in ipairs(clients) do
     vim.notify("Reloading Cargo Workspace")
     ---@diagnostic disable-next-line:param-type-mismatch
@@ -10,7 +10,7 @@ local function reload_workspace(bufnr)
         error(tostring(err))
       end
       vim.notify("Cargo workspace reloaded")
-    end, 0)
+    end, bufnr)
   end
 end
 
