@@ -11,8 +11,8 @@ return {
       keymap = {
         preset = "none",
         ["<C-f>"] = { "accept", "fallback" },
-        ["<C-k>"] = { "select_prev", "fallback" },
-        ["<C-j>"] = { "select_next", "fallback" },
+        ["<C-k>"] = { "select_prev", "snippet_backward", "fallback" },
+        ["<C-j>"] = { "select_next", "snippet_forward", "fallback" },
         ["<C-space>"] = { "show", "show_documentation", "hide_documentation" },
       },
       cmdline = {
