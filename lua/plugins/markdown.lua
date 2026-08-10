@@ -66,11 +66,6 @@ return {
         map_gx({ buf = 0 })
       end
     end,
-    init = function()
-      require("which-key").add({
-        { "<leader>m", group = "Markdown", icon = { icon = "", color = "green" } },
-      })
-    end,
   },
   {
     "HakonHarnes/img-clip.nvim",
@@ -104,11 +99,6 @@ return {
     keys = {
       { "<leader>ii", vim.cmd.PasteImage, desc = "Paste image from system clipboard" },
     },
-    init = function()
-      require("which-key").add({
-        { "<leader>i", group = "Images", icon = { icon = "", color = "blue" } },
-      })
-    end,
   },
   {
     "brianhuster/live-preview.nvim",
@@ -140,10 +130,5 @@ return {
         desc = "Stop LivePreview server",
       },
     },
-    init = function()
-      require("which-key").add({
-        { "<leader>m", group = "Markdown", icon = { icon = "", color = "green" } },
-      })
-    end,
   },
 }

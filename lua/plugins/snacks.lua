@@ -329,10 +329,6 @@ return {
     patch_snacks_image()
   end,
   init = function(plugin)
-    require("which-key").add({
-      { "<leader>s", group = "Search", icon = { icon = "󰍉", color = "green" } },
-    })
-
     -- Fix for C-o working from dashboard on first try (requires two presses without this)
     if plugin.opts.dashboard.enabled then
       local id

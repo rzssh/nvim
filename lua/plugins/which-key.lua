@@ -15,7 +15,12 @@ return {
       if prefer_arrows then
         return not (lhs:match("[hjklHJKL]$") or lhs:match("<C%-[hjklHJKL]>$"))
       else
-        return not (lhs:find("<.*Left>") or lhs:find("<.*Right>") or lhs:find("<.*Up>") or lhs:find("<.*Down>"))
+        return not (
+          lhs:find("<.*Left>")
+          or lhs:find("<.*Right>")
+          or lhs:find("<.*Up>")
+          or lhs:find("<.*Down>")
+        )
       end
     end,
     icons = {
@@ -28,11 +33,34 @@ return {
       },
     },
     spec = {
-      { "<leader>c", group = "LSP/Format", icon = { icon = "", color = "blue" }, mode = { "n", "v" } },
-      { "<leader>f", group = "Files", icon = { icon = "󰈔", color = "blue" }, mode = { "n", "v" } },
-      { "<leader>g", group = "VCS", icon = { icon = "󰊢", color = "orange" }, mode = { "n", "v" } },
-      { "<leader>H", group = "Herdr", icon = { icon = "󰁴", color = "green" }, mode = { "n", "v" } },
+      {
+        "<leader>c",
+        group = "LSP/Format",
+        icon = { icon = "", color = "blue" },
+        mode = { "n", "v" },
+      },
+      {
+        "<leader>f",
+        group = "Files",
+        icon = { icon = "󰈔", color = "blue" },
+        mode = { "n", "v" },
+      },
+      {
+        "<leader>g",
+        group = "VCS",
+        icon = { icon = "󰊢", color = "orange" },
+        mode = { "n", "v" },
+      },
+      {
+        "<leader>H",
+        group = "Herdr",
+        icon = { icon = "󰁴", color = "green" },
+        mode = { "n", "v" },
+      },
+      { "<leader>i", group = "Images", icon = { icon = "", color = "blue" } },
+      { "<leader>m", group = "Markdown", icon = { icon = "", color = "green" } },
       { "<leader>p", group = "Pick/Put", icon = { icon = "󰒉", color = "orange" } },
+      { "<leader>s", group = "Search", icon = { icon = "󰍉", color = "green" } },
       { "<leader>t", group = "Toggles" },
       { "<leader>u", group = "Undotree/Toggles", icon = { icon = "←", color = "red" } },
       { "<leader>w", group = "Splits", icon = { icon = "", color = "blue" } },
