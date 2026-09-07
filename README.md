@@ -2,6 +2,8 @@
 
 My daily Neovim configuration: a small core, lazy-loaded plugins, native LSP configuration, and direct integration with the tools I use around the editor.
 
+![Neovim dashboard](assets/nvim-dashboard.png)
+
 ## Startup
 
 Median headless startup is **18.9 ms** across nine warm-cache runs on Neovim 0.12.4, NixOS, and a Ryzen 7 7800X3D:
