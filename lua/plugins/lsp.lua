@@ -37,7 +37,10 @@ local servers = {
 return {
   {
     "neovim/nvim-lspconfig",
-    event = "VeryLazy",
+    event = {
+      "BufReadPre",
+      "BufNewFile",
+    },
     dependencies = { "b0o/schemastore.nvim" },
     config = function()
       for _, name in ipairs(servers) do
