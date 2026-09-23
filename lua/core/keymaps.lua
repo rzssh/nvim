@@ -33,6 +33,7 @@ map("v", ">", ">gv", { noremap = true, silent = true })
 map("v", "<", "<gv", { noremap = true, silent = true })
 
 map("n", "x", '"_x', { noremap = true, silent = true })
+map({ "n", "x", "o" }, "|", "$", { noremap = true, silent = true })
 
 map("n", "<M-->", "<C-x>", { noremap = true, silent = true })
 map("n", "<M-=>", "<C-a>", { noremap = true, silent = true })
