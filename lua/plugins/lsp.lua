@@ -43,6 +43,42 @@ return {
     },
     dependencies = { "b0o/schemastore.nvim" },
     config = function()
+      local tailwind_configs = {
+        "tailwind.config.js",
+        "tailwind.config.cjs",
+        "tailwind.config.mjs",
+        "tailwind.config.ts",
+        "theme/static_src/tailwind.config.js",
+        "theme/static_src/tailwind.config.cjs",
+        "theme/static_src/tailwind.config.mjs",
+        "theme/static_src/tailwind.config.ts",
+      }
+
+      vim.lsp.config("tailwindcss", {
+        root_dir = function(bufnr, on_dir)
+          local path = vim.api.nvim_buf_get_name(bufnr)
+          local config = vim.fs.find(tailwind_configs, { path = path, upward = true })[1]
+          if config then
+            on_dir(vim.fs.dirname(config))
+            return
+          end
+
+          for _, package in
+            ipairs(vim.fs.find({ "package.json", "package.json5" }, { path = path, upward = true }))
+          do
+            local file = io.open(package, "r")
+            local contents = file and file:read("*a")
+            if file then
+              file:close()
+            end
+            if contents and contents:find("tailwindcss", 1, true) then
+              on_dir(vim.fs.dirname(package))
+              return
+            end
+          end
+        end,
+      })
+
       for _, name in ipairs(servers) do
         local cfg = vim.lsp.config[name]
         local cmd = cfg and cfg.cmd
